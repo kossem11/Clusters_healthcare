@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Data Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Анализ медицинских данных</h1>
+        
+        <div class="stats-section">
+            <h2>Общая статистика</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Всего пациентов</h3>
+                    <p>{{ stats.total_patients }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Средний возраст</h3>
+                    <p>{{ "%.1f"|format(stats.avg_age) }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Средний счёт</h3>
+                    <p>${{ "%.2f"|format(stats.avg_billing) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <div class="plot-container">
+                <h2>Кластеризация пациентов</h2>
+                <img src="data:image/png;base64,{{ cluster_plot }}" alt="Cluster Plot">
+            </div>
+
+            <div class="plot-container">
+                <h2>Линейная регрессия</h2>
+                <img src="data:image/png;base64,{{ regression_plot }}" alt="Regression Plot">
+                <div class="metrics">
+                    <p><strong>MSE:</strong> {{ "%.2f"|format(mse) }}</p>
+                    <p><strong>R² Score:</strong> {{ "%.3f"|format(r2) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Распределение по заболеваниям</h2>
+            <ul>
+                {% for condition, count in stats.medical_conditions.items() %}
+                <li>{{ condition }}: {{ count }} пациентов</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
