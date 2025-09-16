@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import base64
 
 class AcademicStressAnalyther:
     def __init__(self, data_path):
@@ -46,3 +46,19 @@ class AcademicStressAnalyther:
         r2 = r2_score(Y_test, y_pred)
 
         return mse, r2, Y_test, y_pred
+    
+    def create_regression_plot(self, y_test, y_pred):
+        plt.figure(figsize=(10, 6))
+        plt.scatter(y_test, y_pred, alpha=0.6)
+        plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+        plt.title('Предсказание vs Реальные значения (Billing Amount)')
+        plt.xlabel('Реальные значения')
+        plt.ylabel('Предсказания')
+        
+        img = io.BytesIO()
+        plt.savefig(img, format='png', bbox_inches='tight')
+        img.seek(0)
+        plot_url = base64.b64encode(img.getvalue()).decode()
+        plt.close()
+        
+        return plot_url
