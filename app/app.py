@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from ml_model import HealthcareAnalyzer
+from subclass import SubClass
 from heart_cluster_model import HeartClustering
 import os
 
@@ -26,6 +27,10 @@ def index():
     regression_plot = analyzer.create_regression_plot(y_test, y_pred)
     
     stats = analyzer.get_statistics()
+
+    #
+    Sub =SubClass({1,4,4,1})
+    #
     
     return render_template('index.html',
                          cluster_plot=cluster_plot,
